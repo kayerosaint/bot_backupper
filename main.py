@@ -1,6 +1,4 @@
 # Бот написан для сервера бэкапера pg_probackup-15
-# Заметки установил на русском
-# Все reply - на английском, кроме send_message
 # Powered by Maksim Kulikov, 2023
 
 import telebot
@@ -25,7 +23,7 @@ def send_file(message):
        # Отправляем содержимое файла в чат
        backuper.send_message(message.chat.id, file_content)
    except FileNotFoundError:
-       backuper.reply_to(message, 'File not found')
+       backuper.reply_to(message, 'Файл не найден')
 
 ### ВОССТАНОВЛЕНИЕ ###
 
@@ -37,7 +35,7 @@ def restore_base(message):
         arg2 = message.text.split()[2]
         subprocess.call(f'make restore_base ARG="{arg1}" ARG2="{arg2}" ARG3="db-sql0-pg15"', shell=True)
     except IndexError:
-        backuper.reply_to(message, 'Invalid command usage. Please provide right botcommand')
+        backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
 
 @backuper.message_handler(func=lambda message: message.text.startswith('/restore_sql1') or message.text.startswith(f'restore_sql1@{bot_name}'))
 def restore_base(message):
@@ -46,7 +44,7 @@ def restore_base(message):
         arg2 = message.text.split()[2]
         subprocess.call(f'make restore_base ARG="{arg1}" ARG2="{arg2}" ARG3="db-sql1-pg15"', shell=True)
     except IndexError:
-        backuper.reply_to(message, 'Invalid command usage. Please provide right botcommand')
+        backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
 
 @backuper.message_handler(func=lambda message: message.text.startswith('/restore_sql2') or message.text.startswith(f'restore_sql2@{bot_name}'))
 def restore_base(message):
@@ -55,7 +53,27 @@ def restore_base(message):
         arg2 = message.text.split()[2]
         subprocess.call(f'make restore_base ARG="{arg1}" ARG2="{arg2}" ARG3="db-sql2-pg15"', shell=True)
     except IndexError:
-        backuper.reply_to(message, 'Invalid command usage. Please provide right botcommand')
+        backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
+
+@backuper.message_handler(func=lambda message: message.text.startswith('/restore_sql3') or message.text.startswith(f'restore_sql3@{bot_name}'))
+def restore_base(message):
+    try:
+        arg1 = message.text.split()[1]
+        arg2 = message.text.split()[2]
+        subprocess.call(f'make restore_base ARG="{arg1}" ARG2="{arg2}" ARG3="db-sql3-pg15"', shell=True)
+    except IndexError:
+        backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
+
+@backuper.message_handler(func=lambda message: message.text.startswith('/restore_sql5') or message.text.startswith(f'restore_sql5@{bot_name}'))
+def restore_base(message):
+    try:
+        arg1 = message.text.split()[1]
+        arg2 = message.text.split()[2]
+        subprocess.call(f'make restore_base ARG="{arg1}" ARG2="{arg2}" ARG3="db-sql5-pg15"', shell=True)
+    except IndexError:
+        backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
+
+
 
 ### ПРОВЕРКА ИНСТАНСОВ ###
 
@@ -73,9 +91,9 @@ def show_backups(message):
         # Отправляем вывод команды, как сообщение
         backuper.send_message(chat_id=message.chat.id, text=short_output)
     except subprocess.CalledProcessError:
-        backuper.reply_to(message, 'An error occurred while executing the command.')
+        backuper.reply_to(message, 'При выполнении команды произошла ошибка')
     except IndexError:
-        backuper.reply_to(message, 'Invalid command usage. Please provide right botcommand')
+        backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
 
 @backuper.message_handler(func=lambda message: message.text.startswith('/show_sql1') or message.text.startswith(f'show_sql1@{bot_name}'))
 def show_backups(message):
@@ -90,9 +108,9 @@ def show_backups(message):
         # Отправляем вывод команды, как сообщение
         backuper.send_message(chat_id=message.chat.id, text=short_output)
     except subprocess.CalledProcessError:
-        backuper.reply_to(message, 'An error occurred while executing the command.')
+        backuper.reply_to(message, 'При выполнении команды произошла ошибка')
     except IndexError:
-        backuper.reply_to(message, 'Invalid command usage. Please provide right botcommand')
+        backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
 
 @backuper.message_handler(func=lambda message: message.text.startswith('/show_sql2') or message.text.startswith(f'show_sql2@{bot_name}'))
 def show_backups(message):
@@ -107,9 +125,44 @@ def show_backups(message):
         # Отправляем вывод команды, как сообщение
         backuper.send_message(chat_id=message.chat.id, text=short_output)
     except subprocess.CalledProcessError:
-        backuper.reply_to(message, 'An error occurred while executing the command.')
+        backuper.reply_to(message, 'При выполнении команды произошла ошибка')
     except IndexError:
-        backuper.reply_to(message, 'Invalid command usage. Please provide right botcommand')
+        backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
+
+@backuper.message_handler(func=lambda message: message.text.startswith('/show_sql3') or message.text.startswith(f'show_sql3@{bot_name}'))
+def show_backups(message):
+    try:
+        output = subprocess.check_output(f'make check_backups ARG3="db-sql3-pg15"', shell=True)
+        # декодируем в string
+        output_str = output.decode('utf-8')
+        # распределяем вывод по строкам
+        lines = output_str.split('\n')
+        # разрешаем выводить только определенное колическто строк
+        short_output = '\n'.join(lines[:15])
+        # Отправляем вывод команды, как сообщение
+        backuper.send_message(chat_id=message.chat.id, text=short_output)
+    except subprocess.CalledProcessError:
+        backuper.reply_to(message, 'При выполнении команды произошла ошибка')
+    except IndexError:
+        backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
+
+@backuper.message_handler(func=lambda message: message.text.startswith('/show_sql5') or message.text.startswith(f'show_sql5@{bot_name}'))
+def show_backups(message):
+    try:
+        output = subprocess.check_output(f'make check_backups ARG3="db-sql5-pg15"', shell=True)
+        # декодируем в string
+        output_str = output.decode('utf-8')
+        # распределяем вывод по строкам
+        lines = output_str.split('\n')
+        # разрешаем выводить только определенное колическто строк
+        short_output = '\n'.join(lines[:15])
+        # Отправляем вывод команды, как сообщение
+        backuper.send_message(chat_id=message.chat.id, text=short_output)
+    except subprocess.CalledProcessError:
+        backuper.reply_to(message, 'При выполнении команды произошла ошибка')
+    except IndexError:
+        backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
+
 
 ### ПРОВЕРКА БАЗ ###
 
@@ -129,11 +182,11 @@ def show_db_0(message):
       # Отправляем файл в чат
       backuper.send_document(message.chat.id, file_content, caption='databases_sql0-pg15')
   except FileNotFoundError:
-      backuper.reply_to(message, 'File not found')
+      backuper.reply_to(message, 'Файл не найден')
   except subprocess.CalledProcessError:
-      backuper.reply_to(message, 'An error occurred while executing the command.')
+      backuper.reply_to(message, 'При выполнении команды произошла ошибка')
   except IndexError:
-      backuper.reply_to(message, 'Invalid command usage. Please provide right botcommand')
+      backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
 
 @backuper.message_handler(func=lambda message: message.text.startswith('/show_db_sql1') or message.text.startswith(f'show_db_sql1@{bot_name}'))
 def show_db_1(message):
@@ -151,11 +204,11 @@ def show_db_1(message):
       # Отправляем файл в чат
       backuper.send_document(message.chat.id, file_content, caption='databases_sql1-pg15')
   except FileNotFoundError:
-      backuper.reply_to(message, 'File not found')
+      backuper.reply_to(message, 'Файл не найден')
   except subprocess.CalledProcessError:
-      backuper.reply_to(message, 'An error occurred while executing the command.')
+      backuper.reply_to(message, 'При выполнении команды произошла ошибка')
   except IndexError:
-      backuper.reply_to(message, 'Invalid command usage. Please provide right botcommand')
+      backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
 
 @backuper.message_handler(func=lambda message: message.text.startswith('/show_db_sql2') or message.text.startswith(f'show_db_sql2@{bot_name}'))
 def show_db_2(message):
@@ -173,11 +226,57 @@ def show_db_2(message):
       # Отправляем файл в чат
       backuper.send_document(message.chat.id, file_content, caption='databases_sql2-pg15')
   except FileNotFoundError:
-      backuper.reply_to(message, 'File not found')
+      backuper.reply_to(message, 'Файл не найден')
   except subprocess.CalledProcessError:
-      backuper.reply_to(message, 'An error occurred while executing the command.')
+      backuper.reply_to(message, 'При выполнении команды произошла ошибка')
   except IndexError:
-      backuper.reply_to(message, 'Invalid command usage. Please provide right botcommand')
+      backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
+
+@backuper.message_handler(func=lambda message: message.text.startswith('/show_db_sql3') or message.text.startswith(f'show_db_sql3@{bot_name}'))
+def show_db_3(message):
+  try:
+      backuper.send_message(message.chat.id, 'запрос выполняется, пожалуйста подождите...')
+      time.sleep(2)
+      proc = subprocess.run(['bash', '/home/backup_user/scripts/get-database.sh','sql3-pg15'], capture_output=True, text=True)
+      proc.check_returncode() # это вызовет CalledProcessError если скрипт не пройдет проверку
+
+      # Используем rb - чтение бинарных данных, так как нужно передать файл
+      with open('/home/backup_user/scripts/databases_sql3-pg15.txt', 'rb') as file:
+          # Читаем содержимое файла
+          file_content = file.read()
+
+      # Отправляем файл в чат
+      backuper.send_document(message.chat.id, file_content, caption='databases_sql3-pg15')
+  except FileNotFoundError:
+      backuper.reply_to(message, 'Файл не найден')
+  except subprocess.CalledProcessError:
+      backuper.reply_to(message, 'При выполнении команды произошла ошибка')
+  except IndexError:
+      backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
+
+@backuper.message_handler(func=lambda message: message.text.startswith('/show_db_sql5') or message.text.startswith(f'show_db_sql5@{bot_name}'))
+def show_db_1(message):
+  try:
+      backuper.send_message(message.chat.id, 'запрос выполняется, пожалуйста подождите...')
+      time.sleep(2)
+      proc = subprocess.run(['bash', '/home/backup_user/scripts/get-database.sh','sql5-pg15'], capture_output=True, text=True)
+      proc.check_returncode() # это вызовет CalledProcessError если скрипт не пройдет проверку
+
+      # Используем rb - чтение бинарных данных, так как нужно передать файл
+      with open('/home/backup_user/scripts/databases_sql5-pg15.txt', 'rb') as file:
+          # Читаем содержимое файла
+          file_content = file.read()
+
+      # Отправляем файл в чат
+      backuper.send_document(message.chat.id, file_content, caption='databases_sql5-pg15')
+  except FileNotFoundError:
+      backuper.reply_to(message, 'Файл не найден')
+  except subprocess.CalledProcessError:
+      backuper.reply_to(message, 'При выполнении команды произошла ошибка')
+  except IndexError:
+      backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
+
+
 
 '''
 @backuper.message_handler(func=lambda message: message.text.startswith('/show_db_sql0') or message.text.startswith(f'show_db_sql0@{bot_name}'))
@@ -200,11 +299,11 @@ def show_db_0(message):
       for part in parts:
           backuper.send_message(message.chat.id, part)
   except FileNotFoundError:
-      backuper.reply_to(message, 'File not found')
+      backuper.reply_to(message, 'Файл не найден')
   except subprocess.CalledProcessError:
-      backuper.reply_to(message, 'An error occurred while executing the command.')
+      backuper.reply_to(message, 'При выполнении команды произошла ошибка')
   except IndexError:
-      backuper.reply_to(message, 'Invalid command usage. Please provide right botcommand')
+      backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
 '''
 
 
@@ -224,9 +323,9 @@ def show_wal(message):
         # Отправляем вывод команды, как сообщение
         backuper.send_message(chat_id=message.chat.id, text=short_output)
     except subprocess.CalledProcessError:
-        backuper.reply_to(message, 'An error occurred while executing the command.')
+        backuper.reply_to(message, 'При выполнении команды произошла ошибка')
     except IndexError:
-        backuper.reply_to(message, 'Invalid command usage. Please provide right botcommand')        
+        backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')        
 
 @backuper.message_handler(func=lambda message: message.text.startswith('/freespace') or message.text.startswith(f'freespace@{bot_name}'))
 def show_space(message):
@@ -237,9 +336,9 @@ def show_space(message):
         # Отправляем вывод команды, как сообщение
         backuper.send_message(chat_id=message.chat.id, text=output_str)
     except subprocess.CalledProcessError:
-        backuper.reply_to(message, 'An error occurred while executing the command.')
+        backuper.reply_to(message, 'При выполнении команды произошла ошибка')
     except IndexError:
-        backuper.reply_to(message, 'Invalid command usage. Please provide right botcommand')
+        backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
 
 @backuper.message_handler(func=lambda message: message.text.startswith('/status') or message.text.startswith(f'status@{bot_name}'))
 def show_errors(message):
@@ -251,9 +350,9 @@ def show_errors(message):
         # Отправляем вывод команды, как сообщение
         backuper.send_message(chat_id=message.chat.id, text=proc.stdout)
     except subprocess.CalledProcessError as err:
-        backuper.reply_to(message, f'An error occurred while executing the command: {err.output}')
+        backuper.reply_to(message, f'При выполнении команды произошла ошибка: {err.output}')
     except IndexError:
-        backuper.reply_to(message, 'Invalid command usage. Please provide right botcommand')
+        backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
 
 # Изменение данных в crontab
 
@@ -266,9 +365,9 @@ def show_crontab(message):
         # Отправляем вывод команды, как сообщение
         backuper.send_message(chat_id=message.chat.id, text=output_str)
     except subprocess.CalledProcessError:
-        backuper.reply_to(message, 'An error occurred while executing the command.')
+        backuper.reply_to(message, 'При выполнении команды произошла ошибка')
     except IndexError:
-        backuper.reply_to(message, 'Invalid command usage. Please provide right botcommand')
+        backuper.reply_to(message, 'Недопустимое использование команды. Пожалуйста, укажите правильную команду бота')
 
 # Создаем словарь для хранения состояния каждого чата
 chat_states = {}
@@ -286,11 +385,11 @@ def cancel(message):
     try:
         if message.chat.id in chat_states:
             del chat_states[message.chat.id]
-            backuper.send_message(message.chat.id, 'Command cancelled')
+            backuper.send_message(message.chat.id, 'Отмена выполнения команды')
         else:
-            backuper.send_message(message.chat.id, 'No command in progress')
+            backuper.send_message(message.chat.id, 'Отмена невозможна. Команда не выполняется')
     except Exception as e:
-        backuper.reply_to(message, 'An error occurred: {}'.format(e))
+        backuper.reply_to(message, 'При выполнении команды произошла ошибка: {}'.format(e))
 
 @backuper.message_handler(func=lambda message: chat_states.get(message.chat.id) == "waiting_for_task")
 def receive_task(message):
@@ -299,9 +398,9 @@ def receive_task(message):
       subprocess.run(["crontab", "-r"])
       # Изменяем crontab
       subprocess.call(f'(crontab -l ; echo "{message.text}") | crontab -', shell=True)
-      backuper.send_message(message.chat.id, 'Crontab changed successfully')
+      backuper.send_message(message.chat.id, 'Crontab успешно изменен')
   except subprocess.CalledProcessError:
-      backuper.reply_to(message, 'An error occurred while changing crontab')
+      backuper.reply_to(message, 'Произошла ошибка при изменении crontab')
   finally:
       # Удаляем состояние чата
       del chat_states[message.chat.id]
